@@ -14,14 +14,44 @@ export default defineConfig({
           prepare: (css) => `:root {\n  ${css}\n}`,
         },
         {
-          input: { theme: "light" },
+          input: { brandTheme: "brand-a-light" },
           include: ['color.**'],
-          prepare: (css) => `@media (prefers-color-scheme: "light") { \n  :root { \n    color-scheme: light; \n    ${css} \n  } \n}\n\n[data-theme="light"] {\n  color-scheme: light; \n  ${css}\n}`,
+          prepare: (css) => `[data-brand="brand-a"][data-theme="light"] {\n  color-scheme: light;\n  ${css}\n}`,
         },
         {
-          input: { theme: "dark" },
+          input: { brandTheme: "brand-a-light" },
           include: ['color.**'],
-          prepare: (css) => `@media (prefers-color-scheme: "dark") { \n  :root { \n    color-scheme: dark; \n    ${css} \n  } \n}\n\n[data-theme="dark"] {\n  color-scheme: dark; \n  ${css}\n}`,
+          prepare: (css) => `@media (prefers-color-scheme: light) {\n  [data-brand="brand-a"] {\n    color-scheme: light;\n    ${css}  \n  }\n}`,
+        },
+        {
+          input: { brandTheme: "brand-b-light" },
+          include: ['color.**'],
+          prepare: (css) => `[data-brand="brand-b"][data-theme="light"] {\n  color-scheme: light;\n  ${css}\n}`,
+        },
+        {
+          input: { brandTheme: "brand-b-light" },
+          include: ['color.**'],
+          prepare: (css) => `@media (prefers-color-scheme: light) {\n  [data-brand="brand-b"] {\n    color-scheme: light;\n    ${css}  \n  }\n}`,
+        },
+        {
+          input: { brandTheme: "brand-a-dark" },
+          include: ['color.**'],
+          prepare: (css) => `[data-brand="brand-a"][data-theme="dark"] {\n  color-scheme: dark;\n  ${css}\n}`,
+        },
+        {
+          input: { brandTheme: "brand-a-dark" },
+          include: ['color.**'],
+          prepare: (css) => `@media (prefers-color-scheme: dark) {\n  [data-brand="brand-a"] {\n    color-scheme: dark;\n    ${css}  \n  }\n}`,
+        },
+        {
+          input: { brandTheme: "brand-b-dark" },
+          include: ['color.**'],
+          prepare: (css) => `[data-brand="brand-b"][data-theme="dark"] {\n  color-scheme: dark;\n  ${css}\n}`,
+        },
+        {
+          input: { brandTheme: "brand-b-dark" },
+          include: ['color.**'],
+          prepare: (css) => `@media (prefers-color-scheme: dark) {\n  [data-brand="brand-b"] {\n    color-scheme: dark;\n    ${css}  \n  }\n}`,
         },
         {
           input: { size: "desktop" },
