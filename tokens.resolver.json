@@ -20,14 +20,20 @@
         ]
       }
     },
-    "theme": {
-      "default": "light",
+    "brandTheme": {
+      "default": "brand-a-light",
       "contexts": {
-        "light": [
-          { "$ref": "tokens/theme/color.light.json" }
+        "brand-a-light": [
+          { "$ref": "tokens/theme/brand-a/light.json" }
         ],
-        "dark": [
-          { "$ref": "tokens/theme/color.dark.json" }
+        "brand-a-dark": [
+          { "$ref": "tokens/theme/brand-a/dark.json" }
+        ],
+        "brand-b-light": [
+          { "$ref": "tokens/theme/brand-b/light.json" }
+        ],
+        "brand-b-dark": [
+          { "$ref": "tokens/theme/brand-b/dark.json" }
         ]
       }
     }
@@ -35,6 +41,6 @@
   "resolutionOrder": [
     { "$ref": "#/sets/primitive" },
     { "$ref": "#/modifiers/size" },
-    { "$ref": "#/modifiers/theme" }
+    { "$ref": "#/modifiers/brandTheme" }
   ]
 }
