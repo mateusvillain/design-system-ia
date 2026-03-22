@@ -23,6 +23,7 @@ export default defineConfig({
           include: ['color.**'],
           prepare: (css) => `@media (prefers-color-scheme: light) {\n  [data-brand="brand-a"] {\n    color-scheme: light;\n    ${css}  \n  }\n}`,
         },
+
         {
           input: { brandTheme: "brand-b-light" },
           include: ['color.**'],
@@ -32,16 +33,6 @@ export default defineConfig({
           input: { brandTheme: "brand-b-light" },
           include: ['color.**'],
           prepare: (css) => `@media (prefers-color-scheme: light) {\n  [data-brand="brand-b"] {\n    color-scheme: light;\n    ${css}  \n  }\n}`,
-        },
-        {
-          input: { brandTheme: "brand-a-dark" },
-          include: ['color.**'],
-          prepare: (css) => `[data-brand="brand-a"][data-theme="dark"] {\n  color-scheme: dark;\n  ${css}\n}`,
-        },
-        {
-          input: { brandTheme: "brand-a-dark" },
-          include: ['color.**'],
-          prepare: (css) => `@media (prefers-color-scheme: dark) {\n  [data-brand="brand-a"] {\n    color-scheme: dark;\n    ${css}  \n  }\n}`,
         },
         {
           input: { brandTheme: "brand-b-dark" },
