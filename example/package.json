@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "scripts": {
+    "build": "npx tz build"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@terrazzo/cli": "^2.0.0-alpha.7",
+    "@terrazzo/plugin-css": "^2.0.0-alpha.7"
+  }
+}
