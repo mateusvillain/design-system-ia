@@ -1,0 +1,81 @@
+.storybook-shell {
+  overflow: hidden;
+  border: var(--shape-border-width-subtle) solid var(--color-border-subtle);
+  border-radius: var(--shape-radius-surface);
+  background: var(--color-background-surface);
+  box-shadow: 0 24px 48px -32px var(--color-shadow-soft);
+}
+
+.storybook-page {
+  margin: 0 auto;
+  padding: var(--space-page-section) var(--space-page-inline);
+  max-width: var(--page-max-width);
+  color: var(--color-text-secondary);
+  font-size: var(--type-font-size-body);
+  line-height: var(--type-line-height-body);
+  font-family: var(--type-font-family-body);
+  background:
+    radial-gradient(circle at top right, var(--color-background-accent), transparent 35%),
+    var(--color-background-surface);
+}
+
+.storybook-page h2 {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0 4px;
+  color: var(--color-text-primary);
+  font-family: var(--type-font-family-brand);
+  font-weight: var(--type-font-weight-display);
+  font-size: var(--type-font-size-hero);
+  line-height: var(--type-line-height-tight);
+  letter-spacing: var(--type-letter-spacing-display);
+}
+
+.storybook-page p {
+  margin: 1em 0;
+}
+
+.storybook-page a {
+  color: var(--color-text-link);
+}
+
+.storybook-page ul {
+  margin: 1em 0;
+  padding-left: var(--space-card);
+}
+
+.storybook-page li {
+  margin-bottom: 8px;
+}
+
+.storybook-page .tip {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: var(--space-inline-tight);
+  border-radius: var(--shape-radius-pill);
+  background: var(--color-status-info-background);
+  padding: var(--badge-padding-block) var(--badge-padding-inline);
+  color: var(--color-status-info-foreground);
+  font-size: var(--type-font-size-label);
+  font-weight: var(--type-font-weight-medium);
+  line-height: var(--type-line-height-tight);
+  letter-spacing: var(--type-letter-spacing-label);
+  text-transform: uppercase;
+}
+
+.storybook-page .tip-wrapper {
+  margin-top: var(--space-page-section);
+  margin-bottom: var(--space-page-section);
+  color: var(--color-text-primary);
+  font-size: var(--type-font-size-body);
+  line-height: var(--type-line-height-body);
+}
+
+.storybook-page .tip-wrapper svg {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 3px;
+  margin-right: 4px;
+  width: 12px;
+  height: 12px;
+}

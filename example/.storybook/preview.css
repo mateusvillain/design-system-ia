@@ -1,0 +1,23 @@
+html,
+body,
+#storybook-root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--type-font-family-body);
+}
+
+.sb-show-main,
+.sb-main-padded,
+.sb-main-fullscreen,
+.sb-main-centered {
+  background: var(--color-background-canvas);
+}
+
+a {
+  color: var(--color-text-link);
+}

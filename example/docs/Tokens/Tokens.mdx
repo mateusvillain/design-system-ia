@@ -1,0 +1,116 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+import './tokens-docs.css';
+
+<Meta title="Foundations/Tokens" />
+
+<div className="token-docs">
+  <section className="token-docs__hero">
+    <span className="token-docs__eyebrow">Design tokens</span>
+    <h1>Foundation for brand, theme and responsive UI</h1>
+    <p>
+      This example exposes semantic tokens on top of primitive scales, so the same components can
+      adapt to Brand A or Brand B, light or dark mode, and responsive spacing and typography.
+    </p>
+  </section>
+
+  <section className="token-docs__section">
+    <h2>Color roles</h2>
+    <p>These semantic tokens drive surface, text, action and feedback styling across the example components.</p>
+    <div className="token-docs__swatches">
+      <article className="token-docs__swatch">
+        <div className="token-docs__color-chip" style={{ background: 'var(--color-background-canvas)' }} />
+        <div className="token-docs__token-body">
+          <strong>Background canvas</strong>
+          <span className="token-docs__token-meta">`--color-background-canvas`</span>
+        </div>
+      </article>
+      <article className="token-docs__swatch">
+        <div className="token-docs__color-chip" style={{ background: 'var(--color-action-primary-background)' }} />
+        <div className="token-docs__token-body">
+          <strong style={{ color: 'var(--color-text-inverse)' }}>Primary action</strong>
+          <span className="token-docs__token-meta">`--color-action-primary-background`</span>
+        </div>
+      </article>
+      <article className="token-docs__swatch">
+        <div className="token-docs__color-chip" style={{ background: 'var(--color-status-success-background)' }} />
+        <div className="token-docs__token-body">
+          <strong>Success feedback</strong>
+          <span className="token-docs__token-meta">`--color-status-success-background`</span>
+        </div>
+      </article>
+      <article className="token-docs__swatch">
+        <div className="token-docs__color-chip" style={{ background: 'var(--color-status-warning-background)' }} />
+        <div className="token-docs__token-body">
+          <strong>Warning feedback</strong>
+          <span className="token-docs__token-meta">`--color-status-warning-background`</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section className="token-docs__section">
+    <h2>Type ramp</h2>
+    <p>The typography tokens switch with the responsive modifier, so the same semantic names scale between mobile and desktop.</p>
+    <div className="token-docs__type-ramp">
+      <div>
+        <div className="token-docs__label">Hero</div>
+        <div className="token-docs__hero-type">Adaptive display headline</div>
+      </div>
+      <div>
+        <div className="token-docs__label">Title</div>
+        <div className="token-docs__title-type">Section heading with brand family</div>
+      </div>
+      <div>
+        <div className="token-docs__label">Body</div>
+        <div className="token-docs__body-type">
+          Readable body copy comes from semantic typography tokens instead of fixed CSS literals.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section className="token-docs__section">
+    <h2>Spacing and shape</h2>
+    <p>Spacing, border widths and radii are also abstracted semantically, so components keep consistent proportions while adapting to screen size.</p>
+    <div className="token-docs__spaces">
+      <div className="token-docs__space-row">
+        <span className="token-docs__token-meta">`--space-inline-tight`</span>
+        <div className="token-docs__space-bar" style={{ width: 'var(--space-inline-tight)' }} />
+      </div>
+      <div className="token-docs__space-row">
+        <span className="token-docs__token-meta">`--space-card`</span>
+        <div className="token-docs__space-bar" style={{ width: 'var(--space-card)' }} />
+      </div>
+      <div className="token-docs__space-row">
+        <span className="token-docs__token-meta">`--space-page-section`</span>
+        <div className="token-docs__space-bar" style={{ width: 'var(--space-page-section)' }} />
+      </div>
+    </div>
+  </section>
+
+  <section className="token-docs__section">
+    <h2>Semantic metrics</h2>
+    <p>Some tokens are meant to be consumed directly in components for layout and control sizing.</p>
+    <div className="token-docs__stats">
+      <article className="token-docs__stat">
+        <div className="token-docs__token-body">
+          <span className="token-docs__label">Button medium height</span>
+          <strong className="token-docs__stat-value">var(--button-min-height-medium)</strong>
+        </div>
+      </article>
+      <article className="token-docs__stat">
+        <div className="token-docs__token-body">
+          <span className="token-docs__label">Surface radius</span>
+          <strong className="token-docs__stat-value">var(--shape-radius-surface)</strong>
+        </div>
+      </article>
+      <article className="token-docs__stat">
+        <div className="token-docs__token-body">
+          <span className="token-docs__label">Page max width</span>
+          <strong className="token-docs__stat-value">var(--page-max-width)</strong>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

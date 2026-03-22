@@ -54,3 +54,6 @@ coverage/
 *.pem
 *.key
 *.crt
+
+*storybook.log
+storybook-static

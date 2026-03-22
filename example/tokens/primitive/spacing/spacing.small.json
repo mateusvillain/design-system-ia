@@ -15,7 +15,7 @@
     },
     "2": {
       "$value": {
-        "value": 3,
+        "value": 2,
         "unit": "px"
       }
     },
@@ -27,37 +27,55 @@
     },
     "8": {
       "$value": {
-        "value": 5,
+        "value": 8,
         "unit": "px"
       }
     },
     "12": {
       "$value": {
-        "value": 6,
+        "value": 10,
         "unit": "px"
       }
     },
     "16": {
       "$value": {
-        "value": 7,
+        "value": 12,
+        "unit": "px"
+      }
+    },
+    "20": {
+      "$value": {
+        "value": 16,
         "unit": "px"
       }
     },
     "24": {
       "$value": {
-        "value": 8,
+        "value": 20,
         "unit": "px"
       }
     },
     "32": {
       "$value": {
-        "value": 9,
+        "value": 24,
         "unit": "px"
       }
     },
     "40": {
       "$value": {
-        "value": 10,
+        "value": 32,
+        "unit": "px"
+      }
+    },
+    "48": {
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      }
+    },
+    "64": {
+      "$value": {
+        "value": 48,
         "unit": "px"
       }
     }

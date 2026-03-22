@@ -1,0 +1,66 @@
+.storybook-stat-card {
+  display: grid;
+  gap: var(--space-stack-compact);
+  min-width: 240px;
+  border: var(--shape-border-width-subtle) solid var(--color-border-subtle);
+  border-radius: var(--shape-radius-surface);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-background-accent) 55%, transparent), transparent 65%),
+    var(--color-background-surface);
+  padding: var(--space-card);
+  box-shadow: 0 24px 48px -36px var(--color-shadow-soft);
+}
+
+.storybook-stat-card__eyebrow {
+  color: var(--color-text-muted);
+  font-family: var(--type-font-family-body);
+  font-size: var(--type-font-size-label);
+  font-weight: var(--type-font-weight-medium);
+  letter-spacing: var(--type-letter-spacing-label);
+  line-height: var(--type-line-height-tight);
+  text-transform: uppercase;
+}
+
+.storybook-stat-card__value {
+  color: var(--color-text-primary);
+  font-family: var(--type-font-family-brand);
+  font-size: var(--type-font-size-hero);
+  font-weight: var(--type-font-weight-display);
+  letter-spacing: var(--type-letter-spacing-display);
+  line-height: var(--type-line-height-tight);
+}
+
+.storybook-stat-card__caption {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--type-font-family-body);
+  font-size: var(--type-font-size-body);
+  line-height: var(--type-line-height-body);
+}
+
+.storybook-stat-card__trend {
+  justify-self: flex-start;
+  border-radius: var(--shape-radius-pill);
+  padding: var(--badge-padding-block) var(--badge-padding-inline);
+  font-family: var(--type-font-family-body);
+  font-size: var(--type-font-size-label);
+  font-weight: var(--type-font-weight-medium);
+  letter-spacing: var(--type-letter-spacing-label);
+  line-height: var(--type-line-height-tight);
+  text-transform: uppercase;
+}
+
+.storybook-stat-card__trend--up {
+  background: var(--color-status-success-background);
+  color: var(--color-status-success-foreground);
+}
+
+.storybook-stat-card__trend--neutral {
+  background: var(--color-background-elevated);
+  color: var(--color-text-primary);
+}
+
+.storybook-stat-card__trend--down {
+  background: var(--color-status-danger-background);
+  color: var(--color-status-danger-foreground);
+}

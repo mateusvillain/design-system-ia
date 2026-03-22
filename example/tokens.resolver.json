@@ -2,7 +2,13 @@
   "name": "Design System",
   "version": "2025.10",
   "sets": {
-    "primitive": {
+    "foundation": {
+      "sources": [
+        { "$ref": "tokens/primitive/foundation/border.json" },
+        { "$ref": "tokens/primitive/foundation/typography.json" }
+      ]
+    },
+    "semantic": {
       "sources": [
         { "$ref": "tokens/semantic/semantic.json" }
       ]
@@ -13,10 +19,12 @@
       "default": "desktop",
       "contexts": {
         "mobile": [
-          { "$ref": "tokens/primitive/spacing/spacing.small.json" }
+          { "$ref": "tokens/primitive/spacing/spacing.small.json" },
+          { "$ref": "tokens/primitive/typography/typography.small.json" }
         ],
         "desktop": [
-          { "$ref": "tokens/primitive/spacing/spacing.large.json" }
+          { "$ref": "tokens/primitive/spacing/spacing.large.json" },
+          { "$ref": "tokens/primitive/typography/typography.large.json" }
         ]
       }
     },
@@ -39,7 +47,8 @@
     }
   },
   "resolutionOrder": [
-    { "$ref": "#/sets/primitive" },
+    { "$ref": "#/sets/foundation" },
+    { "$ref": "#/sets/semantic" },
     { "$ref": "#/modifiers/size" },
     { "$ref": "#/modifiers/brandTheme" }
   ]
