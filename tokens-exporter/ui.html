@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>DTCG Tokens Exporter</title>
+    <title>Exportador de Tokens DTCG</title>
     <style>
       :root {
         color-scheme: light dark;
@@ -82,32 +82,12 @@
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent);
       }
 
-      .brand {
-        margin-bottom: 18px;
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-xl);
-        background: var(--panel);
-        box-shadow: var(--shadow);
-      }
-
-      .eyebrow {
-        margin: 0 0 6px;
-        color: var(--accent);
-        font: 600 11px/1.2 var(--mono);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      h1 {
-        margin: 0 0 8px;
-        font-size: 22px;
-        line-height: 1.1;
-      }
-
-      .subtitle {
-        margin: 0;
-        color: var(--muted);
+      .sidebar .panel {
+        position: sticky;
+        top: 20px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 40px);
       }
 
       .panel {
@@ -125,7 +105,7 @@
       .section-title {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         margin: 0 0 12px;
         font-size: 12px;
         letter-spacing: 0.06em;
@@ -136,6 +116,10 @@
       .selection-list {
         display: grid;
         gap: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding-right: 4px;
       }
 
       .selection-item {
@@ -176,7 +160,7 @@
 
       .actions {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
         gap: 10px;
         margin-top: 14px;
       }
@@ -209,63 +193,9 @@
         cursor: default;
       }
 
-      .summary {
-        display: grid;
-        gap: 10px;
-      }
-
-      .summary-card {
-        padding: 12px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--line);
-        background: var(--panel-strong);
-      }
-
-      .summary-label {
-        margin: 0 0 4px;
-        color: var(--muted);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      .summary-value {
-        margin: 0;
-        font: 600 20px/1.1 var(--display);
-      }
-
       .main {
         display: grid;
         gap: 16px;
-      }
-
-      .toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 16px 18px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-xl);
-        background: var(--panel);
-        box-shadow: var(--shadow);
-      }
-
-      .toolbar h2 {
-        margin: 0 0 4px;
-        font-size: 18px;
-      }
-
-      .toolbar p {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      .toolbar-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
       }
 
       .status {
@@ -290,6 +220,31 @@
         background: rgba(31, 122, 70, 0.1);
       }
 
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        z-index: 20;
+        min-width: 240px;
+        max-width: min(420px, calc(100vw - 32px));
+        padding: 12px 16px;
+        border: 1px solid rgba(31, 122, 70, 0.28);
+        border-radius: 999px;
+        background: rgba(31, 122, 70, 0.96);
+        color: #fff8f3;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transform: translate(-50%, 16px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .toast.visible {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
       .empty {
         display: grid;
         place-items: center;
@@ -302,18 +257,33 @@
         text-align: center;
       }
 
+      .empty strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text);
+        font-size: 16px;
+      }
+
+      .empty p {
+        margin: 0;
+      }
+
       .files {
         display: grid;
         gap: 14px;
+        align-content: start;
       }
 
       .file-card {
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
         border: 1px solid var(--line);
         border-radius: var(--radius-xl);
         background: var(--panel);
         box-shadow: var(--shadow);
         animation: rise 240ms ease;
+        align-self: start;
       }
 
       .file-head {
@@ -344,13 +314,17 @@
       }
 
       .snippet {
+        display: block;
         width: 100%;
-        min-height: 260px;
+        min-height: 220px;
+        height: 100%;
+        flex: 1;
         padding: 16px;
         border: 0;
         background: transparent;
         color: var(--text);
-        resize: vertical;
+        overflow: auto;
+        resize: none;
         font: 12px/1.55 var(--mono);
       }
 
@@ -408,63 +382,28 @@
   <body>
     <div class="app">
       <aside class="sidebar">
-        <section class="brand">
-          <p class="eyebrow">DTCG 2025.10</p>
-          <h1>Tokens Exporter</h1>
-          <p class="subtitle">Selecione coleções e estilos locais do arquivo para gerar JSON por coleção e baixar tudo em um único `.zip`.</p>
-        </section>
-
         <section class="panel">
           <div class="section-title">
-            <span>Export Sources</span>
-            <span id="selected-count">0 selected</span>
+            <span id="selected-count">0 selecionadas</span>
           </div>
           <div class="selection-list" id="selection-list"></div>
           <div class="actions">
-            <button class="button" id="select-all">Select all</button>
-            <button class="button" id="select-none">Clear</button>
-            <button class="button button-primary" id="generate">Generate snippets</button>
-            <button class="button" id="cancel">Close</button>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="section-title">
-            <span>Summary</span>
-          </div>
-          <div class="summary">
-            <div class="summary-card">
-              <p class="summary-label">Collections and style groups</p>
-              <p class="summary-value" id="source-count">0</p>
-            </div>
-            <div class="summary-card">
-              <p class="summary-label">Generated files</p>
-              <p class="summary-value" id="file-count">0</p>
-            </div>
-            <div class="summary-card">
-              <p class="summary-label">Warnings</p>
-              <p class="summary-value" id="warning-count">0</p>
-            </div>
+            <button class="button button-primary" id="download-zip" disabled>Baixar ZIP</button>
           </div>
         </section>
       </aside>
 
       <main class="main">
-        <section class="toolbar">
+        <div class="status" id="status"></div>
+        <section id="results" class="empty">
           <div>
-            <div class="pill">One snippet per file</div>
-            <h2>Preview and download</h2>
-            <p>Variable collections with multiple modes become separate files named `collection.mode.json`.</p>
-          </div>
-          <div class="toolbar-actions">
-            <button class="button button-primary" id="download-zip" disabled>Download ZIP</button>
+            <strong>Nada selecionado</strong>
+            <p>Selecione uma ou mais collections para visualizar os tokens.</p>
           </div>
         </section>
-
-        <div class="status" id="status"></div>
-        <section id="results" class="empty">Selecione ao menos uma coleção ou grupo de estilos e gere os snippets.</section>
       </main>
     </div>
+    <div id="toast" class="toast" aria-live="polite"></div>
 
     <script>
       const state = {
@@ -474,13 +413,12 @@
 
       const selectionList = document.getElementById('selection-list');
       const selectedCount = document.getElementById('selected-count');
-      const sourceCount = document.getElementById('source-count');
-      const fileCount = document.getElementById('file-count');
-      const warningCount = document.getElementById('warning-count');
       const results = document.getElementById('results');
       const status = document.getElementById('status');
+      const toast = document.getElementById('toast');
       const downloadZipButton = document.getElementById('download-zip');
-      const generateButton = document.getElementById('generate');
+      let generateTimer = null;
+      let toastTimer = null;
 
       window.onmessage = (event) => {
         const message = event.data.pluginMessage;
@@ -498,52 +436,13 @@
         if (message.type === 'exports-generated') {
           state.files = message.files || [];
           renderFiles();
-          setStatus(
-            state.files.length
-              ? 'Arquivos gerados. Revise os snippets e baixe o `.zip` quando quiser.'
-              : 'Nenhum arquivo foi gerado para a seleção atual.',
-            state.files.length ? 'success' : ''
-          );
-          generateButton.disabled = false;
+          clearStatus();
           return;
         }
 
         if (message.type === 'exports-error') {
           setStatus(message.message || 'Falha ao gerar os arquivos.', 'error');
-          generateButton.disabled = false;
         }
-      };
-
-      document.getElementById('select-all').onclick = () => {
-        setAllSelections(true);
-      };
-
-      document.getElementById('select-none').onclick = () => {
-        setAllSelections(false);
-      };
-
-      document.getElementById('cancel').onclick = () => {
-        parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
-      };
-
-      document.getElementById('generate').onclick = () => {
-        const selectedIds = getSelectedIds();
-        if (!selectedIds.length) {
-          setStatus('Selecione ao menos uma coleção ou grupo de estilos.', 'error');
-          return;
-        }
-
-        setStatus('Gerando arquivos DTCG 2025.10...', '');
-        generateButton.disabled = true;
-        parent.postMessage(
-          {
-            pluginMessage: {
-              type: 'generate-exports',
-              selectedIds,
-            },
-          },
-          '*'
-        );
       };
 
       downloadZipButton.onclick = async () => {
@@ -564,12 +463,11 @@
 
       function renderSelectionList() {
         selectionList.innerHTML = '';
-        sourceCount.textContent = String(state.exportables.length);
 
         if (!state.exportables.length) {
           const empty = document.createElement('div');
           empty.className = 'selection-item';
-          empty.textContent = 'Nenhuma coleção ou estilo local encontrado neste arquivo.';
+          empty.textContent = 'Nenhuma collection ou estilo local encontrado neste arquivo.';
           selectionList.appendChild(empty);
           updateSelectedCount();
           return;
@@ -586,7 +484,10 @@
           checkbox.type = 'checkbox';
           checkbox.checked = true;
           checkbox.dataset.id = item.id;
-          checkbox.onchange = updateSelectedCount;
+          checkbox.onchange = () => {
+            updateSelectedCount();
+            scheduleGenerate();
+          };
 
           const content = document.createElement('div');
           const name = document.createElement('p');
@@ -595,7 +496,7 @@
 
           const meta = document.createElement('p');
           meta.className = 'selection-meta';
-          meta.textContent = item.count + ' items • ' + item.description;
+          meta.textContent = item.count + ' itens • ' + item.description;
 
           content.appendChild(name);
           content.appendChild(meta);
@@ -607,26 +508,21 @@
         });
 
         updateSelectedCount();
+        scheduleGenerate();
       }
 
       function renderFiles() {
-        results.className = 'files';
-        results.innerHTML = '';
-        fileCount.textContent = String(state.files.length);
-
-        let totalWarnings = 0;
-
         if (!state.files.length) {
           results.className = 'empty';
-          results.textContent = 'Nenhum snippet para mostrar.';
-          warningCount.textContent = '0';
+          results.innerHTML = '<div><strong>Nada selecionado</strong><p>Selecione uma ou mais collections para visualizar os tokens.</p></div>';
           downloadZipButton.disabled = true;
           return;
         }
 
-        state.files.forEach((file) => {
-          totalWarnings += file.warnings.length;
+        results.className = 'files';
+        results.innerHTML = '';
 
+        state.files.forEach((file) => {
           const card = document.createElement('article');
           card.className = 'file-card';
 
@@ -642,8 +538,8 @@
           meta.className = 'file-meta';
           meta.textContent =
             file.warnings.length
-              ? file.warnings.length + ' warning' + (file.warnings.length > 1 ? 's' : '')
-              : 'Sem warnings';
+              ? file.warnings.length + ' aviso' + (file.warnings.length > 1 ? 's' : '')
+              : 'Sem avisos';
 
           info.appendChild(title);
           info.appendChild(meta);
@@ -653,11 +549,11 @@
 
           const copyButton = document.createElement('button');
           copyButton.className = 'button';
-          copyButton.textContent = 'Copy JSON';
+          copyButton.textContent = 'Copiar';
           copyButton.onclick = async () => {
             try {
               await copyText(file.content);
-              setStatus('Snippet copiado: ' + file.name, 'success');
+              showToast('Copiado: ' + file.name);
             } catch (error) {
               setStatus(
                 error && error.message ? error.message : 'Falha ao copiar o snippet.',
@@ -668,7 +564,7 @@
 
           const downloadButton = document.createElement('button');
           downloadButton.className = 'button';
-          downloadButton.textContent = 'Download JSON';
+          downloadButton.textContent = 'Baixar';
           downloadButton.onclick = () => {
             downloadBlob(
               new Blob([file.content], { type: 'application/json' }),
@@ -704,25 +600,16 @@
 
           results.appendChild(card);
         });
-
-        warningCount.textContent = String(totalWarnings);
         downloadZipButton.disabled = false;
       }
 
       function updateSelectedCount() {
         const selectedIds = getSelectedIds();
-        selectedCount.textContent = selectedIds.length + ' selected';
+        selectedCount.textContent = selectedIds.length + ' selecionadas';
       }
 
       function updateSummary() {
-        sourceCount.textContent = String(state.exportables.length);
-        fileCount.textContent = String(state.files.length);
-        warningCount.textContent = String(sumWarnings());
         updateSelectedCount();
-      }
-
-      function sumWarnings() {
-        return state.files.reduce((sum, file) => sum + file.warnings.length, 0);
       }
 
       function getSelectedIds() {
@@ -731,16 +618,60 @@
           .map((input) => input.dataset.id);
       }
 
-      function setAllSelections(checked) {
-        selectionList.querySelectorAll('input[type="checkbox"]').forEach((input) => {
-          input.checked = checked;
-        });
-        updateSelectedCount();
-      }
-
       function setStatus(message, tone) {
         status.textContent = message;
         status.className = 'status visible' + (tone ? ' ' + tone : '');
+      }
+
+      function clearStatus() {
+        status.textContent = '';
+        status.className = 'status';
+      }
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.className = 'toast visible';
+
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+
+        toastTimer = setTimeout(() => {
+          toast.className = 'toast';
+          toastTimer = null;
+        }, 5000);
+      }
+
+      function scheduleGenerate() {
+        if (generateTimer) {
+          clearTimeout(generateTimer);
+        }
+
+        generateTimer = setTimeout(() => {
+          generateTimer = null;
+          requestGeneration();
+        }, 120);
+      }
+
+      function requestGeneration() {
+        const selectedIds = getSelectedIds();
+        if (!selectedIds.length) {
+          state.files = [];
+          renderFiles();
+          clearStatus();
+          return;
+        }
+
+        setStatus('Gerando arquivos DTCG 2025.10...', '');
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'generate-exports',
+              selectedIds,
+            },
+          },
+          '*'
+        );
       }
 
       function downloadBlob(blob, fileName) {

@@ -110,9 +110,9 @@ async function loadExportables(): Promise<ExportableSummary[]> {
     summaries.push({
       id: 'styles:paint',
       type: 'paint-styles',
-      name: 'Paint styles',
+      name: 'Color styles',
       count: paintStyles.length,
-      description: 'Color and gradient styles',
+      description: 'itens de cor e gradiente',
     });
   }
 
@@ -123,7 +123,7 @@ async function loadExportables(): Promise<ExportableSummary[]> {
       type: 'text-styles',
       name: 'Text styles',
       count: textStyles.length,
-      description: 'Typography composite tokens',
+      description: 'itens de tipografia',
     });
   }
 
@@ -134,7 +134,7 @@ async function loadExportables(): Promise<ExportableSummary[]> {
       type: 'effect-styles',
       name: 'Effect styles',
       count: effectStyles.length,
-      description: 'Shadows and raw effect fallbacks',
+      description: 'itens de sombra e efeitos',
     });
   }
 
@@ -145,7 +145,7 @@ async function loadExportables(): Promise<ExportableSummary[]> {
       type: 'grid-styles',
       name: 'Grid styles',
       count: gridStyles.length,
-      description: 'Raw layout grid data',
+      description: 'itens de grid',
     });
   }
 
