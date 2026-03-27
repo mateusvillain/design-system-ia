@@ -232,7 +232,7 @@ async function exportVariableCollection(
       consumer.remove();
     }
 
-    hoistGroupTypes(document);
+    hoistGroupTypes(document, true);
 
     const fileNameBase =
       collection.modes.length > 1
@@ -242,7 +242,7 @@ async function exportVariableCollection(
     files.push({
       id: collection.id + ':' + mode.modeId,
       name: fileNameBase + '.json',
-      content: JSON.stringify(document, null, 2),
+      content: JSON.stringify(orderMetadataFirst(document), null, 2),
       warnings,
       sourceId: collection.id,
     });
@@ -261,13 +261,13 @@ async function exportPaintStyles(): Promise<FileExport[]> {
     insertToken(document, buildNamePath(style.name), serializePaintStyle(style, warnings));
   }
 
-  hoistGroupTypes(document);
+  hoistGroupTypes(document, true);
 
   return [
     {
       id: 'styles:paint',
       name: 'paint-styles.json',
-      content: JSON.stringify(document, null, 2),
+      content: JSON.stringify(orderMetadataFirst(document), null, 2),
       warnings,
       sourceId: 'styles:paint',
     },
@@ -284,13 +284,13 @@ async function exportTextStyles(): Promise<FileExport[]> {
     insertToken(document, buildNamePath(style.name), serializeTextStyle(style, warnings));
   }
 
-  hoistGroupTypes(document);
+  hoistGroupTypes(document, true);
 
   return [
     {
       id: 'styles:text',
       name: 'text-styles.json',
-      content: JSON.stringify(document, null, 2),
+      content: JSON.stringify(orderMetadataFirst(document), null, 2),
       warnings,
       sourceId: 'styles:text',
     },
@@ -307,13 +307,13 @@ async function exportEffectStyles(): Promise<FileExport[]> {
     insertToken(document, buildNamePath(style.name), serializeEffectStyle(style, warnings));
   }
 
-  hoistGroupTypes(document);
+  hoistGroupTypes(document, true);
 
   return [
     {
       id: 'styles:effect',
       name: 'effect-styles.json',
-      content: JSON.stringify(document, null, 2),
+      content: JSON.stringify(orderMetadataFirst(document), null, 2),
       warnings,
       sourceId: 'styles:effect',
     },
@@ -330,13 +330,13 @@ async function exportGridStyles(): Promise<FileExport[]> {
     insertToken(document, buildNamePath(style.name), serializeGridStyle(style, warnings));
   }
 
-  hoistGroupTypes(document);
+  hoistGroupTypes(document, true);
 
   return [
     {
       id: 'styles:grid',
       name: 'grid-styles.json',
-      content: JSON.stringify(document, null, 2),
+      content: JSON.stringify(orderMetadataFirst(document), null, 2),
       warnings,
       sourceId: 'styles:grid',
     },
@@ -620,7 +620,7 @@ function buildNamePath(name: string): string[] {
   return path;
 }
 
-function hoistGroupTypes(node: { [key: string]: unknown }): string | null {
+function hoistGroupTypes(node: { [key: string]: unknown }, isRoot?: boolean): string | null {
   const childKeys = getChildKeys(node);
   if (childKeys.length === 0) {
     return typeof node.$type === 'string' ? node.$type : null;
@@ -634,7 +634,7 @@ function hoistGroupTypes(node: { [key: string]: unknown }): string | null {
       return typeof node.$type === 'string' ? node.$type : null;
     }
 
-    const childType = isToken(child) ? child.$type || null : hoistGroupTypes(child);
+    const childType = isToken(child) ? child.$type || null : hoistGroupTypes(child, false);
     if (!childType) {
       sharedType = null;
       break;
@@ -653,6 +653,10 @@ function hoistGroupTypes(node: { [key: string]: unknown }): string | null {
 
   if (!sharedType) {
     return typeof node.$type === 'string' ? node.$type : null;
+  }
+
+  if (isRoot) {
+    return sharedType;
   }
 
   node.$type = sharedType;
@@ -676,6 +680,38 @@ function getChildKeys(node: { [key: string]: unknown }): string[] {
   }
 
   return keys;
+}
+
+function orderMetadataFirst(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    const result: unknown[] = [];
+    for (let i = 0; i < value.length; i += 1) {
+      result.push(orderMetadataFirst(value[i]));
+    }
+    return result;
+  }
+
+  if (!isObjectRecord(value)) {
+    return value;
+  }
+
+  const ordered: { [key: string]: unknown } = {};
+  const preferredKeys = ['$type', '$value', '$description'];
+
+  for (let i = 0; i < preferredKeys.length; i += 1) {
+    const key = preferredKeys[i];
+    if (key in value) {
+      ordered[key] = orderMetadataFirst(value[key]);
+    }
+  }
+
+  for (const key in value) {
+    if (!(key in ordered)) {
+      ordered[key] = orderMetadataFirst(value[key]);
+    }
+  }
+
+  return ordered;
 }
 
 function sanitizeTokenName(name: string): string {
