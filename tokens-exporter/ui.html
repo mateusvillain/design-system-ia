@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Exportador de Tokens DTCG</title>
     <style>
       :root {
-        color-scheme: light dark;
+        color-scheme: light;
         --bg: #f4f0e8;
         --panel: rgba(255, 251, 245, 0.88);
         --panel-strong: #fffdf8;
@@ -27,24 +27,6 @@
         --display: "Sora", "Avenir Next", "Segoe UI", sans-serif;
       }
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #18110d;
-          --panel: rgba(36, 27, 22, 0.9);
-          --panel-strong: #231a15;
-          --line: rgba(255, 234, 218, 0.08);
-          --line-strong: rgba(255, 234, 218, 0.16);
-          --text: #f6eadf;
-          --muted: #c8ab93;
-          --accent: #ff8d5c;
-          --accent-strong: #ffb089;
-          --accent-soft: rgba(255, 141, 92, 0.16);
-          --success: #5fd28d;
-          --warning: #ffbf5f;
-          --shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
-        }
-      }
-
       * {
         box-sizing: border-box;
       }
@@ -54,8 +36,16 @@
         font: 13px/1.45 var(--display);
         color: var(--text);
         background:
-          radial-gradient(circle at top left, rgba(255, 168, 120, 0.2), transparent 32%),
-          radial-gradient(circle at right 20%, rgba(244, 205, 160, 0.18), transparent 28%),
+          radial-gradient(
+            circle at top left,
+            rgba(255, 168, 120, 0.2),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at right 20%,
+            rgba(244, 205, 160, 0.18),
+            transparent 28%
+          ),
           linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 40%),
           var(--bg);
       }
@@ -79,7 +69,11 @@
 
       .sidebar {
         border-right: 1px solid var(--line);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.26),
+          transparent
+        );
       }
 
       .sidebar .panel {
@@ -129,7 +123,10 @@
         border: 1px solid transparent;
         border-radius: var(--radius-md);
         background: var(--panel-strong);
-        transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+        transition:
+          transform 120ms ease,
+          border-color 120ms ease,
+          background 120ms ease;
       }
 
       .selection-item:hover {
@@ -180,7 +177,11 @@
 
       .button-primary {
         border-color: transparent;
-        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        background: linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-strong)
+        );
         color: #fff8f3;
       }
 
@@ -237,7 +238,9 @@
         transform: translate(-50%, 16px);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 180ms ease, transform 180ms ease;
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease;
       }
 
       .toast.visible {
@@ -388,7 +391,9 @@
           </div>
           <div class="selection-list" id="selection-list"></div>
           <div class="actions">
-            <button class="button button-primary" id="download-zip" disabled>Baixar ZIP</button>
+            <button class="button button-primary" id="download-zip" disabled>
+              Baixar ZIP
+            </button>
           </div>
         </section>
       </aside>
@@ -411,12 +416,12 @@
         files: [],
       };
 
-      const selectionList = document.getElementById('selection-list');
-      const selectedCount = document.getElementById('selected-count');
-      const results = document.getElementById('results');
-      const status = document.getElementById('status');
-      const toast = document.getElementById('toast');
-      const downloadZipButton = document.getElementById('download-zip');
+      const selectionList = document.getElementById("selection-list");
+      const selectedCount = document.getElementById("selected-count");
+      const results = document.getElementById("results");
+      const status = document.getElementById("status");
+      const toast = document.getElementById("toast");
+      const downloadZipButton = document.getElementById("download-zip");
       let generateTimer = null;
       let toastTimer = null;
 
@@ -426,22 +431,22 @@
           return;
         }
 
-        if (message.type === 'init') {
+        if (message.type === "init") {
           state.exportables = message.exportables || [];
           renderSelectionList();
           updateSummary();
           return;
         }
 
-        if (message.type === 'exports-generated') {
+        if (message.type === "exports-generated") {
           state.files = message.files || [];
           renderFiles();
           clearStatus();
           return;
         }
 
-        if (message.type === 'exports-error') {
-          setStatus(message.message || 'Falha ao gerar os arquivos.', 'error');
+        if (message.type === "exports-error") {
+          setStatus(message.message || "Falha ao gerar os arquivos.", "error");
         }
       };
 
@@ -451,37 +456,43 @@
         }
 
         try {
-          const blob = createZipBlob(state.files.map((file) => ({
-            name: file.name,
-            content: file.content,
-          })));
-          downloadBlob(blob, 'design-tokens-export.zip');
+          const blob = createZipBlob(
+            state.files.map((file) => ({
+              name: file.name,
+              content: file.content,
+            })),
+          );
+          downloadBlob(blob, "design-tokens-export.zip");
         } catch (error) {
-          setStatus(error && error.message ? error.message : 'Falha ao gerar o ZIP.', 'error');
+          setStatus(
+            error && error.message ? error.message : "Falha ao gerar o ZIP.",
+            "error",
+          );
         }
       };
 
       function renderSelectionList() {
-        selectionList.innerHTML = '';
+        selectionList.innerHTML = "";
 
         if (!state.exportables.length) {
-          const empty = document.createElement('div');
-          empty.className = 'selection-item';
-          empty.textContent = 'Nenhuma collection ou estilo local encontrado neste arquivo.';
+          const empty = document.createElement("div");
+          empty.className = "selection-item";
+          empty.textContent =
+            "Nenhuma collection ou estilo local encontrado neste arquivo.";
           selectionList.appendChild(empty);
           updateSelectedCount();
           return;
         }
 
         state.exportables.forEach((item) => {
-          const label = document.createElement('label');
-          label.className = 'selection-item';
+          const label = document.createElement("label");
+          label.className = "selection-item";
 
-          const head = document.createElement('div');
-          head.className = 'selection-head';
+          const head = document.createElement("div");
+          head.className = "selection-head";
 
-          const checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
           checkbox.checked = true;
           checkbox.dataset.id = item.id;
           checkbox.onchange = () => {
@@ -489,14 +500,14 @@
             scheduleGenerate();
           };
 
-          const content = document.createElement('div');
-          const name = document.createElement('p');
-          name.className = 'selection-name';
+          const content = document.createElement("div");
+          const name = document.createElement("p");
+          name.className = "selection-name";
           name.textContent = item.name;
 
-          const meta = document.createElement('p');
-          meta.className = 'selection-meta';
-          meta.textContent = item.count + ' itens • ' + item.description;
+          const meta = document.createElement("p");
+          meta.className = "selection-meta";
+          meta.textContent = item.count + " itens • " + item.description;
 
           content.appendChild(name);
           content.appendChild(meta);
@@ -513,62 +524,66 @@
 
       function renderFiles() {
         if (!state.files.length) {
-          results.className = 'empty';
-          results.innerHTML = '<div><strong>Nada selecionado</strong><p>Selecione uma ou mais collections para visualizar os tokens.</p></div>';
+          results.className = "empty";
+          results.innerHTML =
+            "<div><strong>Nada selecionado</strong><p>Selecione uma ou mais collections para visualizar os tokens.</p></div>";
           downloadZipButton.disabled = true;
           return;
         }
 
-        results.className = 'files';
-        results.innerHTML = '';
+        results.className = "files";
+        results.innerHTML = "";
 
         state.files.forEach((file) => {
-          const card = document.createElement('article');
-          card.className = 'file-card';
+          const card = document.createElement("article");
+          card.className = "file-card";
 
-          const head = document.createElement('div');
-          head.className = 'file-head';
+          const head = document.createElement("div");
+          head.className = "file-head";
 
-          const info = document.createElement('div');
-          const title = document.createElement('p');
-          title.className = 'file-title';
+          const info = document.createElement("div");
+          const title = document.createElement("p");
+          title.className = "file-title";
           title.textContent = file.name;
 
-          const meta = document.createElement('p');
-          meta.className = 'file-meta';
-          meta.textContent =
-            file.warnings.length
-              ? file.warnings.length + ' aviso' + (file.warnings.length > 1 ? 's' : '')
-              : 'Sem avisos';
+          const meta = document.createElement("p");
+          meta.className = "file-meta";
+          meta.textContent = file.warnings.length
+            ? file.warnings.length +
+              " aviso" +
+              (file.warnings.length > 1 ? "s" : "")
+            : "Sem avisos";
 
           info.appendChild(title);
           info.appendChild(meta);
 
-          const actions = document.createElement('div');
-          actions.className = 'file-actions';
+          const actions = document.createElement("div");
+          actions.className = "file-actions";
 
-          const copyButton = document.createElement('button');
-          copyButton.className = 'button';
-          copyButton.textContent = 'Copiar';
+          const copyButton = document.createElement("button");
+          copyButton.className = "button";
+          copyButton.textContent = "Copiar";
           copyButton.onclick = async () => {
             try {
               await copyText(file.content);
-              showToast('Copiado: ' + file.name);
+              showToast("Copiado: " + file.name);
             } catch (error) {
               setStatus(
-                error && error.message ? error.message : 'Falha ao copiar o snippet.',
-                'error'
+                error && error.message
+                  ? error.message
+                  : "Falha ao copiar o snippet.",
+                "error",
               );
             }
           };
 
-          const downloadButton = document.createElement('button');
-          downloadButton.className = 'button';
-          downloadButton.textContent = 'Baixar';
+          const downloadButton = document.createElement("button");
+          downloadButton.className = "button";
+          downloadButton.textContent = "Baixar";
           downloadButton.onclick = () => {
             downloadBlob(
-              new Blob([file.content], { type: 'application/json' }),
-              file.name
+              new Blob([file.content], { type: "application/json" }),
+              file.name,
             );
           };
 
@@ -577,8 +592,8 @@
           head.appendChild(info);
           head.appendChild(actions);
 
-          const textarea = document.createElement('textarea');
-          textarea.className = 'snippet';
+          const textarea = document.createElement("textarea");
+          textarea.className = "snippet";
           textarea.readOnly = true;
           textarea.value = file.content;
 
@@ -586,11 +601,11 @@
           card.appendChild(textarea);
 
           if (file.warnings.length) {
-            const list = document.createElement('ul');
-            list.className = 'warnings';
+            const list = document.createElement("ul");
+            list.className = "warnings";
 
             file.warnings.forEach((warning) => {
-              const item = document.createElement('li');
+              const item = document.createElement("li");
               item.textContent = warning;
               list.appendChild(item);
             });
@@ -605,7 +620,7 @@
 
       function updateSelectedCount() {
         const selectedIds = getSelectedIds();
-        selectedCount.textContent = selectedIds.length + ' selecionadas';
+        selectedCount.textContent = selectedIds.length + " selecionadas";
       }
 
       function updateSummary() {
@@ -613,31 +628,33 @@
       }
 
       function getSelectedIds() {
-        return Array.from(selectionList.querySelectorAll('input[type="checkbox"]'))
+        return Array.from(
+          selectionList.querySelectorAll('input[type="checkbox"]'),
+        )
           .filter((input) => input.checked)
           .map((input) => input.dataset.id);
       }
 
       function setStatus(message, tone) {
         status.textContent = message;
-        status.className = 'status visible' + (tone ? ' ' + tone : '');
+        status.className = "status visible" + (tone ? " " + tone : "");
       }
 
       function clearStatus() {
-        status.textContent = '';
-        status.className = 'status';
+        status.textContent = "";
+        status.className = "status";
       }
 
       function showToast(message) {
         toast.textContent = message;
-        toast.className = 'toast visible';
+        toast.className = "toast visible";
 
         if (toastTimer) {
           clearTimeout(toastTimer);
         }
 
         toastTimer = setTimeout(() => {
-          toast.className = 'toast';
+          toast.className = "toast";
           toastTimer = null;
         }, 5000);
       }
@@ -662,21 +679,21 @@
           return;
         }
 
-        setStatus('Gerando arquivos DTCG 2025.10...', '');
+        setStatus("Gerando arquivos DTCG 2025.10...", "");
         parent.postMessage(
           {
             pluginMessage: {
-              type: 'generate-exports',
+              type: "generate-exports",
               selectedIds,
             },
           },
-          '*'
+          "*",
         );
       }
 
       function downloadBlob(blob, fileName) {
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
         link.download = fileName;
         document.body.appendChild(link);
@@ -686,31 +703,35 @@
       }
 
       async function copyText(value) {
-        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        if (
+          navigator.clipboard &&
+          typeof navigator.clipboard.writeText === "function"
+        ) {
           try {
             await navigator.clipboard.writeText(value);
             return;
-          } catch (_error) {
-          }
+          } catch (_error) {}
         }
 
-        const textarea = document.createElement('textarea');
+        const textarea = document.createElement("textarea");
         textarea.value = value;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        textarea.style.pointerEvents = 'none';
-        textarea.style.left = '-9999px';
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        textarea.style.pointerEvents = "none";
+        textarea.style.left = "-9999px";
         document.body.appendChild(textarea);
         textarea.focus();
         textarea.select();
         textarea.setSelectionRange(0, textarea.value.length);
 
-        const copied = document.execCommand('copy');
+        const copied = document.execCommand("copy");
         textarea.remove();
 
         if (!copied) {
-          throw new Error('O Figma bloqueou a cópia automática neste contexto.');
+          throw new Error(
+            "O Figma bloqueou a cópia automática neste contexto.",
+          );
         }
       }
 
@@ -783,7 +804,7 @@
         ]);
 
         return new Blob([localDirectory, centralDirectory, endRecord], {
-          type: 'application/zip',
+          type: "application/zip",
         });
       }
 
@@ -799,10 +820,7 @@
       }
 
       function uint16LE(value) {
-        return new Uint8Array([
-          value & 0xff,
-          (value >> 8) & 0xff,
-        ]);
+        return new Uint8Array([value & 0xff, (value >> 8) & 0xff]);
       }
 
       function uint32LE(value) {
@@ -833,7 +851,7 @@
         for (let i = 0; i < 256; i += 1) {
           let value = i;
           for (let bit = 0; bit < 8; bit += 1) {
-            value = (value & 1) ? (0xedb88320 ^ (value >>> 1)) : (value >>> 1);
+            value = value & 1 ? 0xedb88320 ^ (value >>> 1) : value >>> 1;
           }
           table[i] = value >>> 0;
         }
